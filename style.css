@@ -1,0 +1,301 @@
+:root {
+    --primary-color: #5B86E5; /* A vibrant, modern blue */
+    --primary-dark: #3F6AC0;
+    --secondary-color: #6C757D; /* Standard grey */
+    --background-color: #F0F2F5; /* Soft light grey */
+    --card-background: #FFFFFF; /* Pure white for cards/popups */
+    --text-color: #333333; /* Darker text for readability */
+    --border-color: #E0E0E0; /* Lighter border */
+    --success-color: #28A745;
+    --error-color: #DC3545;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-heavy: rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* General text font */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.chat-container {
+    background-color: var(--card-background);
+    border-radius: 15px; /* Slightly more rounded */
+    box-shadow: 0 12px 35px var(--shadow-heavy); /* Deeper shadow */
+    width: 90%;
+    max-width: 650px; /* Slightly wider */
+    height: 85vh; /* Taller */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth cubic-bezier transition */
+}
+
+.chat-container.blurred {
+    filter: blur(8px); /* More blur */
+    pointer-events: none;
+    transform: scale(0.95); /* Slight shrink on blur */
+    opacity: 0.7;
+}
+
+.chat-header {
+    background: linear-gradient(to right, #5B86E5, #36D1DC); /* Gradient header */
+    color: white;
+    padding: 20px 30px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+    justify-content: center; /* Center align title */
+    align-items: center;
+    box-shadow: 0 4px 10px var(--shadow-light);
+}
+
+.chat-header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-family: 'Montserrat', sans-serif; /* Different font for header */
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* More space between messages */
+    scroll-behavior: smooth;
+    flex-shrink: 1; /* Allow messages to shrink */
+}
+
+/* Custom scrollbar for better aesthetics */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+    border: 2px solid var(--background-color); /* Add border to make it slimmer */
+}
+
+.message {
+    max-width: 70%; /* Slightly smaller bubble */
+    padding: 14px 20px; /* More padding */
+    border-radius: 22px; /* More rounded bubbles */
+    line-height: 1.5;
+    word-wrap: break-word;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08); /* Smoother shadow */
+}
+
+.message.incoming {
+    align-self: flex-start;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border-bottom-left-radius: 8px; /* Less rounded on one corner */
+}
+
+.message.outgoing {
+    align-self: flex-end;
+    background: linear-gradient(to right, #6A82FB, #FC5C7D); /* Gradient for outgoing */
+    color: white;
+    border-bottom-right-radius: 8px; /* Less rounded on one corner */
+}
+
+.chat-input {
+    display: flex;
+    padding: 18px 25px; /* More padding */
+    border-top: 1px solid var(--border-color);
+    background-color: var(--card-background);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 14px 22px; /* More padding */
+    border: 1px solid var(--border-color);
+    border-radius: 28px; /* More rounded */
+    font-size: 1.05em;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-input input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(91, 134, 229, 0.2); /* Stronger focus shadow */
+}
+
+.chat-input button {
+    background: linear-gradient(to right, #5B86E5, #36D1DC); /* Gradient button */
+    color: white;
+    border: none;
+    padding: 12px 25px; /* More padding */
+    border-radius: 28px;
+    margin-left: 12px;
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.chat-input button:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* Login Overlay and Popup */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.login-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.login-popup {
+    background-color: var(--card-background);
+    padding: 40px 45px; /* More padding */
+    border-radius: 15px;
+    box-shadow: 0 20px 50px var(--shadow-heavy); /* Even heavier shadow */
+    width: 90%;
+    max-width: 450px; /* Slightly wider */
+    text-align: center;
+    transform: translateY(-50px) scale(0.7); /* Initial position for animation */
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease; /* Pop-out effect */
+}
+
+.login-overlay.active .login-popup {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.login-popup h2 {
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    font-size: 2.2em; /* Larger title */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.input-group {
+    margin-bottom: 25px; /* More space */
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--secondary-color);
+    font-size: 1em; /* Slightly larger label */
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 18px; /* More padding */
+    border: 1px solid var(--border-color);
+    border-radius: 10px; /* More rounded */
+    font-size: 1.05em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(91, 134, 229, 0.2);
+}
+
+.login-popup button[type="submit"] {
+    background: linear-gradient(to right, #5B86E5, #36D1DC); /* Gradient button */
+    color: white;
+    border: none;
+    padding: 14px 30px; /* More padding */
+    border-radius: 10px;
+    font-size: 1.2em; /* Larger text */
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.login-popup button[type="submit"]:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.login-popup button[type="button"]#closeLogin {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 1.05em;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.login-popup button[type="button"]#closeLogin:hover {
+    background-color: #5A6268;
+}
+
+/* Animation for typing "login" */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: white; } /* Caret color changed for header */
+}
+
+.typing-animation-container {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: .15em solid white; /* Caret color for header */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: white;
+    animation: 
+        typing 1.5s steps(7, end) forwards, /* Faster typing */
+        blink-caret .75s step-end infinite;
+}
